@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+    <input name="next" type="hidden" value="{{ next }}">
+    </form>
+    <p class="text-muted">Don't have an account? <a href="{% url 'user:register' %}">Click here to create one</a></p>
+    <a href="{% url 'social:begin' 'github'%}">Login with github</a>
+    <a href="{% url 'social:begin' 'twitter-oauth2'%}">Login with twitter</a>
+{% endblock %}

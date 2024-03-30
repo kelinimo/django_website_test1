@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Your Cart</h1>
+  {% if cart.products.exists %}
+<div class="col-auto">
+    <table class="table-bordered table table-hover table align-middle">
+      <thead>
+        <tr class="table-primary">
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in cart_products %}
+          <tr>
+            <td class="text-truncate" style="max-width: 320px;">{{ product.product.name }}</td>
+            <td>${{ product.product.get_price }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>${{ product.get_price }}</td>
+            <td>
+              <form method="get" action="{% url 'store:remove_from_cart' product.product.slug %}">
+{#                {% csrf_token %}#}
+                <input type="submit" value="Remove">
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No products in your cart.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+    <p><strong>Total:</strong> ${{ total }}</p>
+    <a href="{% url 'store:index' %}">Go to checkout</a>
+  {% else %}
+    <p>No products in your cart.</p>
+  {% endif %}
+{% endblock %}

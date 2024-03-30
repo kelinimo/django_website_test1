@@ -1,0 +1,64 @@
+{% load crispy_forms_filters %}
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid mt-auto mb-auto">
+        <a class="navbar-brand" href="{% url 'store:index' %}">My Shop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'store:product_list' %}">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+            {% if search_form %}
+            <!-- Centered search form -->
+            <form id="search_form" class="w-auto d-flex" action="">
+                {{ search_form }}
+                <button form="search_form" class="btn btn-outline-success btn-block" type="submit">Search</button>
+            </form>
+            {% endif %}
+
+
+{#            <form class="d-flex w-auto" action="{% url 'store:product_list' %}">#}
+{#                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">#}
+{#                <button class="btn btn-outline-success" type="submit">Search</button>#}
+{#            </form>#}
+            <div class="dropdown ms-auto mt-sm-3 mt-lg-auto d-flex">
+                <!-- User cart (visible even if not authenticated) -->
+                <a href="{% url 'store:cart_view' %}"><button type="button" class="btn btn-info me-2">Cart</button></a>
+                <!-- If authenticated show dropdown options -->
+                {% if user.is_authenticated %}
+                <!-- User profile dropdown -->
+                <button class="btn btn-secondary dropdown-toggle d-flex justify-content-center align-items-center" style="min-width: 120px;" type="button" id="userLoginButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div id="user-pic" class="me-sm-2">
+                        <img src="{% static 'avatar-guest.png' %}" class="rounded-circle" alt="Profile picture" width="32" height="32">
+                    </div>
+                    <span class="d-inline-block text-truncate align-baseline" style="max-width: 100px;">{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="userLoginButton">
+                    <!-- User settings -->
+                    <a class="dropdown-item" href="{% url 'user:user_settings' %}">Settings</a>
+                    <li class="dropdown-divider"></li>
+                    <!-- User logout -->
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                       <button type="submit" class="dropdown-item">Log Out</button>
+                    </form>
+                </ul>
+            </div>
+            {% else %}
+            <!-- Sign In button -->
+            <a href="{% url 'login' %}" class="btn btn-outline-light ms-auto">Sign In</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

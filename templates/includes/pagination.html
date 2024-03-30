@@ -1,0 +1,21 @@
+{% if page_obj %}
+    <div class="d-flex justify-content-center mt-3 fixed-bottom">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.previous_page_number }}">Prev</a>
+                </li>
+            {% endif %}
+            <li class="page-item active">
+                <span class="page-link bg-dark" style="border-color: gray">Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
+            </li>
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}

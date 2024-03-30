@@ -1,0 +1,17 @@
+{% load static %}
+<div class="mt-4 ms-4">
+    <div class="card rounded-1 shadow-sm h-100">
+        <img src="{{ product.image.url }}" class="card-img-top" style="object-fit: cover; height: 200px;" alt="Product {{ product.name }}">
+        <div class="card-body">
+            <h5 class="card-title text-truncate" title="{{ product.name }}">{{ product.name }}</h5>
+            <p class="card-text">{{ product.category.name }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-sm btn-outline-secondary">View</a>
+                    <a href="{% url 'store:add_to_cart' product.slug %}" class="btn btn-sm btn-outline-secondary">Add to Cart</a>
+                </div>
+                <small class="text-muted">{{ product.get_price }}</small>
+            </div>
+        </div>
+    </div>
+</div>
