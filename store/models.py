@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -58,7 +60,7 @@ class CartProduct(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.quantity} of {self.product.name}"
+        return self.product.name
 
     def get_true_price(self):
         return self.quantity * self.product.price
@@ -80,6 +82,7 @@ class Cart(models.Model):
     session_key = models.CharField(max_length=40, null=True)
     products = models.ManyToManyField(Product, through='CartProduct')
     date_created = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
 
     def get_total(self):
         total = 0
@@ -92,24 +95,26 @@ class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    phone = models.CharField(max_length=12, null=True)
     address = models.ForeignKey('Address', on_delete=models.CASCADE)
 
-    placed = models.BooleanField(default=False)
-    time_placed = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=[  # Order processing stages
+        ('PENDING', 'Pending'),
+        ('PROCESSING', 'Processing'),
+        ('SHIPPED', 'Shipped'),
+        ('DELIVERED', 'Delivered'),
+        ('CANCELED', 'Canceled'),
+    ], default='PENDING')
 
-    sent_out = models.BooleanField(default=False)
-    time_sent = models.DateTimeField(null=True, blank=True)
-
-    completed = models.BooleanField(default=False)
-    date_completed = models.DateTimeField(null=True, blank=True)
+    class Meta:
+        ordering = ['-date_created']
 
 
 class Address(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
     street = models.CharField(max_length=100)
-    city = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    zip_code = models.CharField(max_length=10)
-    country = models.CharField(max_length=50)
+    house_number = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f'{self.street}, {self.house_number}'

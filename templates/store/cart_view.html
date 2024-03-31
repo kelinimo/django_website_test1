@@ -37,7 +37,7 @@
     </table>
 </div>
     <p><strong>Total:</strong> ${{ total }}</p>
-    <a href="{% url 'store:index' %}">Go to checkout</a>
+    <a href="{% url 'store:checkout_view' %}">Go to checkout</a>
   {% else %}
     <p>No products in your cart.</p>
   {% endif %}

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import CheckboxSelectMultiple
 
-from .models import CartProduct, Address, Category, Product
+from .models import CartProduct, Address, Category, Product, Order
 
 
 class FiltersForm(forms.Form):
@@ -23,13 +23,10 @@ class SearchForm(forms.Form):
     ))
 
 
-class AddressForm(forms.ModelForm):
+class OrderForm(forms.ModelForm):
+    address = forms.ModelChoiceField(queryset=Address.objects.all(), label='Choose shop address.', required=False)
+
     class Meta:
-        model = Address
-        fields = (
-            "first_name",
-            "last_name",
-            "street",
-            "city",
-            "zip_code",
-        )
+        model = Order
+        fields = ('address', 'phone')
+

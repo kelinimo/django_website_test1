@@ -13,8 +13,9 @@ urlpatterns = [
     path('products/<slug:slug>/', views.ProductDetailView.as_view(), name='product_detail'),
     path('products/', views.ProductListView.as_view(), name='product_list'),
     path('category/<slug:slug>/', views.CategoryView.as_view(), name='category'),
-    path('cart/', views.CartView.as_view(), name='cart_view')
-
+    path('cart/', views.CartView.as_view(), name='cart_view'),
+    path('checkout/', views.OrderCheckoutView.as_view(), name='checkout_view'),
+    path('viewordertest/', views.view_orders, name='orders_view')
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -2,10 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, DetailView, ListView, View
 
-from store.forms import FiltersForm
-from store.models import Product, Cart, CartProduct, Category
+from store.forms import FiltersForm, OrderForm
+from store.models import Product, Cart, CartProduct, Category, Order
 from store import forms
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+
 
 # Create your views here.
 
@@ -85,11 +86,10 @@ class CategoryView(ListView):
 def get_cart(request):
     if not request.session or not request.session.session_key:
         request.session.save()
-        cart, created = Cart.objects.get_or_create(session_key=request.session.session_key)
-    elif request.session.session_key:
-        cart, created = Cart.objects.get_or_create(session_key=request.session.session_key)
+    if request.session.session_key:
+        cart, created = Cart.objects.get_or_create(session_key=request.session.session_key, active=True)
     else:
-        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart, created = Cart.objects.get_or_create(user=request.user, active=True)
     return cart
 
 
@@ -133,5 +133,34 @@ class CartView(TemplateView):
         return context
 
 
+class OrderCheckoutView(TemplateView):
+    template_name = 'store/order_checkout.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderCheckoutView, self).get_context_data(**kwargs)
+        order_form = forms.OrderForm()
+        context['order_form'] = order_form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        order_form = forms.OrderForm(request.POST)
+        if order_form.is_valid():
+            cart = get_cart(self.request)
+            order = Order.objects.create(user=self.request.user,
+                                         cart=cart,
+                                         address=order_form.cleaned_data['address'],
+                                         phone=order_form.cleaned_data['phone']
+                                         )
+            cart.active = False
+            cart.save()
+            return redirect('store:cart_view')
 
 
+@permission_required('store.add_order')
+def view_orders(request):
+    orders = Order.objects.select_related('address', 'cart').prefetch_related('cart__cartproduct_set',
+                                                                              'cart__cartproduct_set__product')
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'store/view_orders.html', context=context)
