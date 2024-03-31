@@ -156,9 +156,9 @@ LOGIN_REDIRECT_URL = '/store/'
 
 
 AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.twitter_oauth2.TwitterOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
 
 ]
 
