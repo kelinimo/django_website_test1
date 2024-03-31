@@ -1,11 +1,10 @@
 from django import forms
 from django.forms import CheckboxSelectMultiple
 
-from .models import CartProduct, Address, Category, Product, Order
+from .models import Address, Category, Order
 
 
 class FiltersForm(forms.Form):
-    product_with_max_price = Product.objects.order_by('-price').first().price
     min_price = forms.FloatField(widget=forms.NumberInput(
         attrs={'value': 0}
     ), required=False, min_value=0)
