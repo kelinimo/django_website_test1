@@ -146,8 +146,8 @@ class OrderCheckoutView(TemplateView):
         order_form = forms.OrderForm(request.POST)
         if order_form.is_valid():
             cart = get_cart(self.request)
-            order = Order.objects.create(user=self.request.user,
-                                         cart=cart,
+
+            order = Order.objects.create(cart=cart,
                                          address=order_form.cleaned_data['address'],
                                          phone=order_form.cleaned_data['phone']
                                          )

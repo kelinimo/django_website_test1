@@ -93,14 +93,13 @@ class Cart(models.Model):
 
 class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
     phone = models.CharField(max_length=12, null=True)
     address = models.ForeignKey('Address', on_delete=models.CASCADE)
 
-    status = models.CharField(max_length=20, choices=[  # Order processing stages
+    status = models.CharField(max_length=20, choices=[
         ('PENDING', 'Pending'),
         ('PROCESSING', 'Processing'),
         ('SHIPPED', 'Shipped'),
