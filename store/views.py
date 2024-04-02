@@ -165,6 +165,9 @@ class OrderCheckoutView(TemplateView):
             cart.active = False
             cart.save()
             return redirect("store:cart_view")
+        else:
+            context = {"order_form": order_form}
+            return render(request, self.template_name, context)
 
 
 @permission_required("store.add_order")

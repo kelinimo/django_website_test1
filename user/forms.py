@@ -7,11 +7,11 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['username', 'first_name', 'last_name', 'email']
+        fields = ["username", "first_name", "last_name", "email"]
 
 
 class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = UserForm.Meta.fields + ['first_name', 'last_name', 'email']
+        fields = UserForm.Meta.fields

@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import RegexValidator
 from django.forms import CheckboxSelectMultiple
 
 from .models import Address, Category, Order
@@ -31,8 +32,9 @@ class SearchForm(forms.Form):
 
 class OrderForm(forms.ModelForm):
     address = forms.ModelChoiceField(
-        queryset=Address.objects.all(), label="Choose shop address.", required=False
+        queryset=Address.objects.all(), label="Choose shop address."
     )
+    phone = forms.CharField(validators=[RegexValidator(r"^\d{7,12}$")])
 
     class Meta:
         model = Order

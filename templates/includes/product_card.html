@@ -11,7 +11,12 @@
           <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-sm btn-outline-secondary">View</a>
           <a href="{% url 'store:add_to_cart' product.slug %}" class="btn btn-sm btn-outline-secondary">Add to Cart</a>
         </div>
-        <small class="text-muted">{{ product.get_price }}</small>
+        <div class="d-flex flex-column ps-2 text-center">
+          {% if product.discount_price %}
+            <small class="text-danger text-decoration-line-through">{{ product.price }}</small>
+          {% endif %}
+          <small class="fw-bolder">{{ product.get_price }}</small>
+        </div>
       </div>
     </div>
   </div>
