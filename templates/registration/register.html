@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Register</h2>
+  <h2>Register</h2>
   {% if form.errors %}
     <p style="color: red">Error{{ form.errors }}</p>
   {% endif %}
 
-<form method="post">
+  <form method="post">
     {% csrf_token %}
-    {{form}}
+    {{ form }}
     <input type="submit" value="Register">
-</form>
+  </form>
 
-<a href="{% url 'login' %}">Back to login</a>
-<a href="{% url 'social:begin' 'twitter-oauth2'%}">Login with twitter</a>
-<a href="{% url 'social:begin' 'github'%}">Login with github</a>
+  <a href="{% url 'login' %}">Back to login</a>
+  <a href="{% url 'social:begin' 'twitter-oauth2' %}">Login with twitter</a>
+  <a href="{% url 'social:begin' 'github' %}">Login with github</a>
 
 {% endblock %}

@@ -3,9 +3,9 @@
 {% block content %}
   <h1>Your Cart</h1>
   {% if cart.products.exists %}
-<div class="col-auto">
-    <table class="table-bordered table table-hover table align-middle">
-      <thead>
+    <div class="col-auto">
+      <table class="table-bordered table table-hover table align-middle">
+        <thead>
         <tr class="table-primary">
           <th>Product</th>
           <th>Price</th>
@@ -13,8 +13,8 @@
           <th>Total</th>
           <th>Actions</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         {% for product in cart_products %}
           <tr>
             <td class="text-truncate" style="max-width: 320px;">{{ product.product.name }}</td>
@@ -22,10 +22,8 @@
             <td>{{ product.quantity }}</td>
             <td>${{ product.get_price }}</td>
             <td>
-              <form method="get" action="{% url 'store:remove_from_cart' product.product.slug %}">
-{#                {% csrf_token %}#}
-                <input type="submit" value="Remove">
-              </form>
+              <a class="btn btn-outline-success" href="{% url 'store:add_to_cart' product.product.slug %}">➕</a>
+              <a class="btn btn-outline-danger" href="{% url 'store:remove_from_cart' product.product.slug %}">➖</a>
             </td>
           </tr>
         {% empty %}
@@ -33,9 +31,9 @@
             <td colspan="5">No products in your cart.</td>
           </tr>
         {% endfor %}
-      </tbody>
-    </table>
-</div>
+        </tbody>
+      </table>
+    </div>
     <p><strong>Total:</strong> ${{ total }}</p>
     <a href="{% url 'store:checkout_view' %}">Go to checkout</a>
   {% else %}

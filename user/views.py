@@ -11,12 +11,12 @@ from user.forms import UserForm, CustomUserCreationForm
 
 
 class UserSettingsView(LoginRequiredMixin, TemplateView):
-    template_name = 'registration/user_settings.html'
+    template_name = "registration/user_settings.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['password_form'] = PasswordChangeForm(user=self.request.user)
-        context['user_form'] = UserForm(instance=self.request.user)
+        context["password_form"] = PasswordChangeForm(user=self.request.user)
+        context["user_form"] = UserForm(instance=self.request.user)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -29,17 +29,15 @@ class UserSettingsView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(self.get_context_data())
 
 
-
 def register(request):
     if request.method == "GET":
         return render(
-            request, "registration/register.html",
-            {"form": CustomUserCreationForm}
+            request, "registration/register.html", {"form": CustomUserCreationForm}
         )
     elif request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             return redirect(reverse("store:index"))
         return render(request, "registration/register.html", {"form": form})

@@ -19,9 +19,7 @@ class Category(models.Model):
         super(Category, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("store:category", kwargs={
-            'slug': self.slug
-        })
+        return reverse("store:category", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.name
@@ -30,11 +28,15 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    discount_price = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
+    discount_price = models.DecimalField(
+        blank=True, null=True, max_digits=10, decimal_places=2
+    )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     slug = models.SlugField(null=True, blank=True)
     description = models.TextField()
-    image = models.ImageField(upload_to='products/', null=True, blank=True, default='products/default.jpg')
+    image = models.ImageField(
+        upload_to="products/", null=True, blank=True, default="products/default.jpg"
+    )
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -49,13 +51,11 @@ class Product(models.Model):
         return self.discount_price if self.discount_price else self.price
 
     def get_absolute_url(self):
-        return reverse("store:product", kwargs={
-            'slug': self.slug
-        })
+        return reverse("store:product", kwargs={"slug": self.slug})
 
 
 class CartProduct(models.Model):
-    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, null=True)
+    cart = models.ForeignKey("Cart", on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(default=1)
 
@@ -78,9 +78,11 @@ class CartProduct(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
+    )
     session_key = models.CharField(max_length=40, null=True)
-    products = models.ManyToManyField(Product, through='CartProduct')
+    products = models.ManyToManyField(Product, through="CartProduct")
     date_created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
 
@@ -97,18 +99,22 @@ class Order(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
 
     phone = models.CharField(max_length=12, null=True)
-    address = models.ForeignKey('Address', on_delete=models.CASCADE)
+    address = models.ForeignKey("Address", on_delete=models.CASCADE)
 
-    status = models.CharField(max_length=20, choices=[
-        ('PENDING', 'Pending'),
-        ('PROCESSING', 'Processing'),
-        ('SHIPPED', 'Shipped'),
-        ('DELIVERED', 'Delivered'),
-        ('CANCELED', 'Canceled'),
-    ], default='PENDING')
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("PENDING", "Pending"),
+            ("PROCESSING", "Processing"),
+            ("SHIPPED", "Shipped"),
+            ("DELIVERED", "Delivered"),
+            ("CANCELED", "Canceled"),
+        ],
+        default="PENDING",
+    )
 
     class Meta:
-        ordering = ['-date_created']
+        ordering = ["-date_created"]
 
 
 class Address(models.Model):
@@ -116,4 +122,4 @@ class Address(models.Model):
     house_number = models.CharField(max_length=20)
 
     def __str__(self):
-        return f'{self.street}, {self.house_number}'
+        return f"{self.street}, {self.house_number}"

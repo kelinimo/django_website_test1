@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-{% for order in orders %}
-  <h2>Order - {{ order.id }}</h2>
-  <p>Address: {{ order.address }}</p>
-  <p>Phone: {{ order.phone }}</p>
-  <p>Status: {{ order.status }}</p>
-  <h3>Products:</h3>
-  <ul>
-    {% for product in order.cart.cartproduct_set.all %}
-      <li>
-        {{ product }} - quantity: {{ product.quantity }} (price: {{ product.get_price }})
-      </li>
-    {% endfor %}
-  </ul>
-{% endfor %}
+  {% for order in orders %}
+    <h2>Order - {{ order.id }}</h2>
+    <p>Address: {{ order.address }}</p>
+    <p>Phone: {{ order.phone }}</p>
+    <p>Status: {{ order.status }}</p>
+    <h3>Products:</h3>
+    <ul>
+      {% for product in order.cart.cartproduct_set.all %}
+        <li>
+          {{ product }} - quantity: {{ product.quantity }} (price: {{ product.get_price }})
+        </li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
 {% endblock content %}
 
