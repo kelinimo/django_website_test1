@@ -9,6 +9,8 @@
       <input name="next" type="hidden" value="{{ next }}">
     </form>
     <p class="text-muted">Don't have an account? <a href="{% url 'user:register' %}">Click here to create one</a></p>
+    <br>
+    <p>or</p><br>
     <a href="{% url 'social:begin' 'github' %}">Login with github</a>
   </div>
 {% endblock %}

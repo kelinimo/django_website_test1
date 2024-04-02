@@ -5,12 +5,18 @@
     <h1>User settings</h1>
     <form method="post">
       {% csrf_token %}
+      {% if user_form.errors %}
+        <p class="text-danger-emphasis">Error{{ user_form.errors }}</p>
+      {% endif %}
       {{ user_form|crispy }}
       <input type="submit" value="Save changes">
     </form>
     <h1>Change password</h1>
     <form method="post">
       {% csrf_token %}
+      {% if password_form.errors %}
+        <p class="text-danger-emphasis">Error{{ password_form.errors }}</p>
+      {% endif %}
       {{ password_form|crispy }}
       <input type="submit" value="Save new password">
     </form>
