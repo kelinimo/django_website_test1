@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-  <h2>Register</h2>
-  {% if form.errors %}
-    <p style="color: red">Error{{ form.errors }}</p>
-  {% endif %}
+  <div class="col-auto">
+    <h2>Register</h2>
+    {% if form.errors %}
+      <p class="text-danger-emphasis">Error{{ form.errors }}</p>
+    {% endif %}
 
-  <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Register">
-  </form>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <input type="submit" value="Register">
+    </form>
 
-  <a href="{% url 'login' %}">Back to login</a>
-  <a href="{% url 'social:begin' 'github' %}">Login with github</a>
-
+    <a href="{% url 'login' %}">Back to login</a>
+    <a href="{% url 'social:begin' 'github' %}">Login with github</a>
+  </div>
 {% endblock %}

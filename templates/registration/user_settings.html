@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 {% block content %}
-  <h1>User settings</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ user_form.as_p }}
-    <input type="submit" value="Save changes">
-  </form>
-  <h1>Change password</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ password_form.as_p }}
-    <input type="submit" value="Save new password">
-  </form>
+  <div class="col-auto">
+    <h1>User settings</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ user_form|crispy }}
+      <input type="submit" value="Save changes">
+    </form>
+    <h1>Change password</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ password_form|crispy }}
+      <input type="submit" value="Save new password">
+    </form>
 
+  </div>
 
 
 {% endblock %}
